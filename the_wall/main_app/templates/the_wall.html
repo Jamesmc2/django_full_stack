@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>CodingDojo Wall</h1>
+    <p>Welcome {{request.session.user_name}}</p>
+    <h3>Post a message</h3>
+    <form action="/wall/post_message" method="POST">
+        {% csrf_token %}
+        <textarea rows="4" cols="30" name="post"></textarea><br>
+        <input type="submit" value="Post a message">
+    </form>
+    <br>
+    {% for post in posts reversed %}
+    <h3>{{post.user.first_name}} {{post.user.last_name}} - {{post.created_at}}</h3>
+    <p>{{post.message}}</p>
+    {% if post.user.id == request.session.user_id %}
+    <a href="/wall/delete_post/{{post.id}}">Delete Post</a>
+    {% endif %}
+    {% for comment in post.comments.all %}
+    <h4>{{comment.user.first_name}} {{comment.user.last_name}} - {{comment.created_at}}</h4>
+    <p>{{comment.comment}}</p>
+
+    {% endfor %}
+    <h4>Post a comment</h4>
+    <form action="/wall/post_comment" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="current_post" value={{post.id}}>
+        <textarea rows="3" cols="20" name="comment"></textarea>
+        <input type="submit" value="Post a comment">
+    </form>
+
+    {% endfor %}
+    <a href="/logout">Logout</a> 
+
+</body>
+</html>

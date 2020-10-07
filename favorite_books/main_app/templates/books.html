@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Welcome, {{request.session.user_name}}</h1>
+    <h2>Add a Favorite Book</h2>
+    <form method="GET" action="/books/add_new">
+        {% csrf_token %}
+        <p>Title</p>
+        <input type="text" name="title">
+        <p>Description</p>
+        <input type="text" name="description"><br>
+        <input type="submit" value="Add">
+    </form>
+    <h2>All Books</h2>
+    {% for book in books %}
+    <a href="/books/{{book.id}}">{{book.title}}</a><br>
+    <span>(added by {{book.uploaded_by.first_name}} {{book.uploaded_by.last_name}})</span><br>
+    {% if current_user in book.users_who_like.all %}
+    <span>this is one of your favorites</span>
+    {% endif %}
+    {% endfor %}
+</body>
+</html>

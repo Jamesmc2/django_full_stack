@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="/shows">Go back</a>
+    <h1>Add a New Show</h1>
+    <form action="/shows/create" method="POST">
+        {% csrf_token %}
+        Title<br>
+        <input type="text" name="title"><br>
+        Network<br>
+        <input type="text" name="network"><br>
+        Release Date<br>
+        <input type="date" name="release_date"><br>
+        Description<br>
+        <textarea rows='10' cols='30' name="description"></textarea><br>
+        <input type="submit" value="Create">
+    </form>
+    {% for message in messages %}
+    {{message}}<br>
+    {% endfor %}
+</body>
+</html>
